@@ -1,0 +1,50 @@
+echo "Aguarde um momento estamos ativando o Wndows"
+echo "Peço de clique em sim/ok nas caixas que venham a aparecer"
+@echo off slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
+@echo off slmgr /skms kms8.msguides.com
+@echo off slmgr /ato
+echo .
+echo .
+echo .
+echo              .---------------------------.            
+echo              |  /---------------------\  |            
+echo              | |                       | |            
+echo              | |     windows           | |            
+echo              | |      ativado com      | |            
+echo              | |       SUCESSO!!!      | |            
+echo              | |                       | |            
+echo              |  \_____________________/  |            
+echo              |___________________________|            
+echo            .---\_____     []     _______/------.      
+echo          /         /______________\           /|      
+echo        /___________________________________ /  | ___  
+echo        |                                   |   |    ) 
+echo        |  _ _ _                 [-------]  |   |   (  
+echo        |  o o o                 [-------]  |  /    _)_
+echo        |__________________________________ |/     /  /
+echo    /-------------------------------------/|      ( )/ 
+echo  /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ /            
+echo /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ /              
+echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~              
+echo .
+echo .
+echo .
+echo "Pressione qualquer tecla para sair"
+echo .
+echo .---.---.---.---.---.---.---.---.---.---.---.---.---.-------.
+echo |1/2| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 | + | ' | &lt;- |
+echo |---'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-----|
+echo | -&gt;| | Q | W | E | R | T | Y | U | I | O | P | ] | ^ |  |
+echo |-----'.--'.--'.--'.--'.--'.--'.--'.--'.--'.--'.--'.--'|    |
+echo | Caps | A | S | D | F | G | H | J | K | L | \ | [ | * |    |
+echo |----.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'---'----|
+echo |    | &lt; | Z | X | C | V | B | N | M | . | . | - |       |
+echo |----'-.-'.--'--.'---'---'---'---'---'---'-.-'---'.--.------|
+echo | ctrl |  | alt |                          |altgr |  | ctrl |
+echo '------'  '-----'--------------------------'------'  '------'                                          
+echo "Aproveite"
+echo .
+echo .
+echo .
+pause
+
