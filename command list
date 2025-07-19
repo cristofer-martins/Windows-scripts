@@ -1,0 +1,291 @@
+psexec -s /user:EBSERHNET\adm.cmartins -i \\10.94. cmd
+psexec @C:\Temp\computadores.txt -s -u EBSERHNET\adm.cmartins -i Enable-PSRemoting -Force
+psexec @C:\Temp\computadores.txt -s -u EBSERHNET\adm.cmartins -i powershell -Command "winrm quickconfig -force; Start-Service -Name WinRM; Enable-PSRemoting -Force"
+psexec @C:\Temp\computadores.txt -s -u EBSERHNET\adm.cmartins -i msg * "URGENTE !!!! Seu computador está vunerável! Favor entrar em contato com o Suporte Técnico através do ramal 8165"
+====================================================================================
+Add-WindowsCapability -Online -Name Microsoft.DesktopAppInstaller~~~~0.0.1.0
+Add-WindowsCapability -Online -Name Microsoft.Winget.Client~~~~0.0.1.0
+Add-WindowsCapability -Online -Name Microsoft.VCLibs.140.00.UWPDesktop~~~~0.0.1.0
+
+net time \\EBSERHNET /set /y <time_update>
+cmd for /f "tokens=*" %u in ('wmic useraccount get name^|findstr /v /i "Administrator DefaultAccount Guest"') do net user "%u" /delete
+cmd /c "for /d %u in (C:\Users\*) do rd /s /q %u\AppData\Local & del /s /q %temp%\*" <apaga temporarios e cache allusers>
+sfc /scannow <reparação de arquivos corrompidos>
+dism /online /cleanup-image /restorehealth <verificação de integridade de sistema>
+shutdown -r -f -t 0 <Reinicia a maquina t -0>
+gpupdate /force <atualização de politicas de grupo>
+"C:\Program Files\GLPI-Agent\glpi-agent.exe" --force <forçar inventário>
+{
+glpi-agent --force
+"C:\Program Files\GLPI-Agent\glpi-inventory.bat"
+C:\ProgramData\GLPI-Agent\log.txt
+}
+wmic diskdrive get model,name,size,serialnumber,status <status do disco>
+wmic logicaldisk get size,freespace,caption
+irm pwsh.sh | iex <qztray>
+Set-Printer -Name "Nome_da_Impressora" -Default 
+Get-Printer | Select-Object Name
+wuauclt /detectnow /updatenow <windows-update force>
+query session
+logoff <ID da Sessão>
+winget install --id=Microsoft.teams --scope machine <instalar teams NOVO>
+winget upgrade --all --include-unknown
+rundll32 printui.dll,PrintUIEntry /in /n\\10.94.61.16\husc-imp-MS622-62.17
+rundll32 printui.dll,PrintUIEntry /in /n\\10.94.61.16\husc-imp-mx522-62.55
+rundll32 printui.dll,PrintUIEntry /ga /n\\10.94.61.16
+Add-Printer -ConnectionName "\\10.94.61.16\husc-imp-mx522-62.47"
+wmic product get name
+tasklist
+defrag C: /O
+defrag C: /O /F /V
+defrag c: /u /v
+net stop spooler
+del /Q /F C:\Windows\System32\spool\PRINTERS\*
+net start spooler
+net stop spooler /y && net start spooler
+wevtutil qe System /q:"*[System[Provider[@Name='EventLog'] and (EventID=6006 or EventID=41 or EventID=7 or EventID=51 or EventID=55 or EventID=12 or EventID=13)]]" /c:1 /f:text /rd:true <eventos> 
+msg * /server:NOME-OU-IP-DA-MAQUINA "Sua mensagem aqui"
+============================================
+instalar winget 
+============================================
+powershell -Command "& {Invoke-WebRequest -Uri 'https://aka.ms/getwinget' -OutFile C:\Temp\Microsoft.DesktopAppInstaller.appxbundle}"
+powershell -Command "Add-AppxPackage -Path 'C:\Temp\Microsoft.DesktopAppInstaller.appxbundle'"
+
+============================================
+DEBLOAT
+============================================
+Get-AppxPackage -AllUsers -Name Microsoft.549981C3F5F10 | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -EQ "Microsoft.549981C3F5F10" | Remove-AppxProvisionedPackage -Online
+Get-AppxPackage -allusers *Bing* | Remove-AppxPackage
+Get-AppxPackage -allusers *MSNWeather* | Remove-AppxPackage
+Get-AppxPackage -allusers *News* | Remove-AppxPackage
+Get-AppxPackage -allusers *Skype* | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like "*Skype*" | Remove-AppxProvisionedPackage -Online
+Get-AppxPackage -allusers *Xbox* | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like "*Xbox*" | Remove-AppxProvisionedPackage -Online
+Get-AppxPackage -allusers *Solitaire* | Remove-AppxPackage
+Get-AppxPackage -allusers *Gaming* | Remove-AppxPackage
+Get-AppxPackage -allusers *Minecraft* | Remove-AppxPackage
+Get-AppxPackage -allusers *YourPhone* | Remove-AppxPackage  # Remove o aplicativo Seu Telefone
+Get-AppxPackage -allusers *OneNote* | Remove-AppxPackage    # Remove o OneNote
+Get-AppxPackage -allusers *OfficeHub* | Remove-AppxPackage  # Remove o Hub do Office
+Get-AppxPackage -allusers *People* | Remove-AppxPackage     # Remove o aplicativo Contatos
+Get-AppxPackage -allusers *Clipchamp* | Remove-AppxPackage  # Remove o Clipchamp (editor de vídeo)
+Get-AppxPackage -allusers *Cortana* | Remove-AppxPackage    # Remove a Cortana completamente
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like "*Cortana*" | Remove-AppxProvisionedPackage -Online
+Get-AppxPackage -allusers Microsoft.XboxGamingOverlay | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like "Microsoft.XboxGamingOverlay" | Remove-AppxProvisionedPackage -Online
+reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "MenuShowDelay" /t REG_SZ /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" /v "AppCaptureEnabled" /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\ApplicationManagement\AllowGameDVR" /v "value" /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v "AllowTelemetry" /t REG_DWORD /d 0 /f  # Desativa Telemetria
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" /v "AppCaptureEnabled" /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\default\ApplicationManagement\AllowGameDVR" /v "value" /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v "AllowCortana" /t REG_DWORD /d 0 /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v "AllowTelemetry" /t REG_DWORD /d 0 /f
+Stop-Service DiagTrack -Force
+Set-Service DiagTrack -StartupType Disabled
+C:\Windows\System32\sc.exe config XblAuthManager start= disabled
+C:\Windows\System32\sc.exe config XblGameSave start= disabled
+C:\Windows\System32\sc.exe config XboxNetApiSvc start= disabled
+C:\Windows\System32\sc.exe stop "DiagTrack"
+C:\Windows\System32\sc.exe config "DiagTrack" start= disabled
+C:\Windows\System32\sc.exe stop "dmwappushservice"
+C:\Windows\System32\sc.exe config "dmwappushservice" start= disabled
+
+============================================
+METRICAS
+============================================
+wmic cpu get loadpercentage
+wmic OS get FreePhysicalMemory,TotalVisibleMemorySize
+wmic logicaldisk get DeviceID,FreeSpace,Size
+wmic nic where "NetEnabled=true" get Name,MACAddress,Speed
+
+
+
+============================================
+WINSAT
+============================================
+winsat disk -seq -write -drive C
+winsat disk -seq -read -drive C
+winsat disk -ran -read -drive C
+winsat disk -ran -write -drive C
+
+============================================
+PAGEFILE 32Gb
+============================================
+
+reg delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v "PagingFiles" /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v "PagingFiles" /t REG_MULTI_SZ /d "C:\pagefile.sys 32768 32768" /f
+wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=32768,MaximumSize=32768
+wmic pagefile list /format:list
+
+============================================
+Reinstalar Impressora
+============================================
+wmic printer get name
+printui.exe /dl /n "HP LaserJet 1010"
+printui.exe /s
+rundll32 printui.dll,PrintUIEntry /ia /m "Nome do Modelo" /f "C:\caminho\do\arquivo.inf"
+rundll32 printui.dll,PrintUIEntry /if /b "Nome da Impressora" /f "C:\caminho\do\arquivo.inf" /r "COM3" /m "Nome do Modelo"
+net share NomeDoCompartilhamento="Nome da Impressora"
+sc config spooler depend= RPCSS
+net stop spooler /y && net start spooler
+
+============================================
+Instalar impressora compartilhadas
+============================================
+
+rundll32 printui.dll,PrintUIEntry /in /n "\\NomeDoPC\NomeDoCompartilhamento"
+Add-Printer -ConnectionName "\\NomeDoPC\NomeDoCompartilhamento"
+
+============================================
+c++ NET
+============================================
+Invoke-WebRequest -Uri "https://github.com/abbodi1406/vcredist/releases/download/v0.86.0/VisualCppRedist_AIO_x86_x64.exe" -OutFile "C:\Temp\c++.exe"
+Start-Process "C:\Temp\c++.exe" -ArgumentList "/S" -Wait
+
+net3.5
+Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All -LimitAccess -NoRestart
+
+# Define os links de download oficiais da Microsoft para cada versão
+$links = @{
+    "4.5"   = "https://download.microsoft.com/download/1/4/3/1431F768-6099-4F82-B9F0-F56A42A1BA6D/dotnetfx45_full_x86_x64.exe"
+    "4.5.1" = "https://download.microsoft.com/download/B/2/6/B26FB93F-98F1-4E4D-B509-89AB56B89D36/NDP451-KB2858728-x86-x64-AllOS-ENU.exe"
+    "4.5.2" = "https://download.microsoft.com/download/4/8/E/48E15FF0-8CDB-46A7-9BC6-59489D88A2D3/NDP452-KB2901954-Web.exe"
+    "4.7"   = "https://download.microsoft.com/download/6/0/F/60F5A94E-60F4-4E89-B4EE-3C60542EFCF1/NDP47-KB3186497-x86-x64-AllOS-ENU.exe"
+    "4.8"   = "https://go.microsoft.com/fwlink/?linkid=2088631"  # Redireciona para a versão mais recente do 4.8
+}
+
+# Define o local de download
+$downloadPath = "$env:TEMP\DotNetInstallers"
+New-Item -ItemType Directory -Path $downloadPath -Force | Out-Null
+
+# Função para baixar e instalar
+function Install-DotNet {
+    param (
+        [string]$version,
+        [string]$url
+    )
+    $installer = "$downloadPath\dotnet-$version.exe"
+
+    Write-Host "Baixando .NET Framework $version..."
+    Invoke-WebRequest -Uri $url -OutFile $installer
+
+    Write-Host "Instalando .NET Framework $version..."
+    Start-Process -FilePath $installer -ArgumentList "/quiet /norestart" -Wait
+}
+
+# Loop para baixar e instalar todas as versões
+foreach ($version in $links.Keys) {
+    Install-DotNet -version $version -url $links[$version]
+}
+
+Write-Host "Todas as versões do .NET Framework foram instaladas!" -ForegroundColor Green
+
+
+============================================
+reg add "HKEY_CLASSES_ROOT\https\shell\open\command" /ve /d \"C:\\Program Files\\Mozilla Firefox\\firefox.exe\" \"https://10.94.61.155/aghu/pages/casca/casca.xhtml\" /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoLogoffTimeout" /t REG_DWORD /d 1800 /f
+REG ADD "HKCU\Software\Microsoft\Office\Teams" /v "AutoStart" /t REG_DWORD /d 0 /f <REMOVER INICIALIZAÇÃO AUTOMATICA DO TEAMS>
+
+============================================
+FIREFOX 
+============================================
+"C:\Program Files\Mozilla Firefox\updater.exe" "C:\Program Files\Mozilla Firefox\update" "C:\Program Files\Mozilla Firefox" "C:\Program Files\Mozilla Firefox"
+"C:\Program Files\Mozilla Maintenance Service\maintenanceservice.exe" --update
+"C:\Program Files\Mozilla Maintenance Service (x86)\maintenanceservice.exe" --update
+
+
+
+xcopy "\\10.94.61.118\Publico\Firefox_web.exe" "C:\Temp"
+cd C:\Temp
+firefox_web.exe /S /V"/qn"
+taskkill /IM firefox.exe /F & start firefox
+cd C:\Program Files\Mozilla Firefox\
+firefox.exe --version
+
+============================================
+EXTENSÃO AGHU Firefox
+============================================
+xcopy "\\10.94.61.118\Publico\Mozilla Firefox" "C:\Program Files\Mozilla Firefox" /E /H /C /Y
+
+
+============================================
+
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v HideFastUserSwitching /t REG_DWORD /d 1 /f
+
+============================================
+INSTALL CADSUS
+============================================
+Copy-Item -Path "\\10.94.61.118\Suporte\DiagnosticoCDS.exe" -Destination "C:\Temp\DiagnosticoCDS.exe"
+Start-Process "C:\Temp\DiagnosticoCDS.exe" -ArgumentList "/S" -Wait
+
+xcopy "\\10.94.61.118\Publico\DiagnosticoCDS.exe" "C:\Temp"
+cd C:\Temp
+DiagnosticoCDS.exe/S /V"/qn"
+
+======================================================
+Forçando idioma do sistema para PT-BR via Registro...
+======================================================
+REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\Language" /v "InstallLanguage" /t REG_SZ /d 0416 /f
+REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\Language" /v "Default" /t REG_SZ /d 0416 /f
+REG ADD "HKEY_CURRENT_USER\Control Panel\International" /v "Locale" /t REG_SZ /d 00000416 /f
+REG ADD "HKEY_CURRENT_USER\Control Panel\International" /v "LocaleName" /t REG_SZ /d pt-BR /f
+REG ADD "HKEY_CURRENT_USER\Control Panel\International" /v "Locale" /t REG_SZ /d 00000416 /f
+REG ADD "HKEY_CURRENT_USER\Control Panel\International" /v "LocaleName" /t REG_SZ /d pt-BR /f
+REG ADD "HKEY_CURRENT_USER\Control Panel\International" /v "sLanguage" /t REG_SZ /d pt-BR /f
+REG ADD "HKEY_USERS\.DEFAULT\Control Panel\International" /v "Locale" /t REG_SZ /d 00000416 /f
+REG ADD "HKEY_USERS\.DEFAULT\Control Panel\International" /v "LocaleName" /t REG_SZ /d pt-BR /f
+REG ADD "HKEY_USERS\.DEFAULT\Control Panel\International" /v "sLanguage" /t REG_SZ /d pt-BR /f
+====================================================
+
+====================================================
+Forçando ACESSO REMOTO  via Registro...
+====================================================
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+Netsh advfirewall firewall set rule group="Remote Desktop" new enable=Yes
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f
+net stop termservice /y && net start termservice
+====================================================
+LOGIN TIMEOUT 30MIN
+====================================================
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "AutoLogoffTimeout" /t REG_DWORD /d 1800 /f
+
+====================================================
+Forçar Windows update
+====================================================
+Passo 2: Digite UsoClient StartScan para verificar se há atualizações.
+Passo 3: Digite UsoClient StartDownload para baixar as atualizações.
+Passo 4: Digite UsoClient StartInstall para começar a instalar as atualizações.
+Passo 5: Digite UsoClient RestartDevice para reiniciar o dispositivo após instalar as atualizações.
+Passo 6: Digite UsoClient ScanInstallWait para verificar, baixar e instalar atualizações
+====================================================
+====================================================
+Forçando StorageSense  via Registro...
+====================================================
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" /v "Type" /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" /v "OneDriveCleanupDays" /t REG_DWORD /d 10 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" /v "TempCleanupDays" /t REG_DWORD /d 1 /f
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" /v "Enabled" /t REG_DWORD /d 1 /f
+
+
+
+=====================================================
+DESATIVAR TRANSPARENCIA
+=====================================================
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f
+reg add HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System /v EnableTransparency /t REG_DWORD /d 0 /f
+taskkill /f /im explorer.exe && start explorer.exe
+====================================================
+
+=====================================================
+shedule tasks
+=====================================================
+schtasks /create /tn "DISM Cleanup" /tr "dism /online /cleanup-image /restorehealth" /sc monthly /mo first /d MON /st 03:00
+schtasks /create /tn "sfc" /tr "sfc /scannow" /sc monthly /mo first /d TUE /st 01:00
+schtasks /create /tn "winget" /tr "winget upgrade -r" /sc weekly /d MON /st 02:00
+schtasks /create /tn "gpupdate" /tr "gpupdate /force" /sc monthly /mo first /d MON /st 08:00
+schtasks /CREATE /TN "ext_pul" /TR "xcopy \\10.94.61.118\Publico\Mozilla Firefox \"C:\Program Files\Mozilla Firefox\" /E /H /C /Y" /SC ONSTART /RL HIGHEST /F
+schtasks /create /tn "Reboot_Daily" /tr "shutdown.exe -r -f -t 0" /sc daily /st 00:00
